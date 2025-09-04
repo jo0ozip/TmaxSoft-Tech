@@ -1,0 +1,191 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-jeus-env
+  namespace: jeus8
+data:
+  env.sh: |
+    #!/bin/bash
+    export JAVA_HOME=/usr/java/jdk
+    export INSTALL_HOME=/sw
+    export JEUS_HOME=/sw/jeus8.5
+    export PATH=$JEUS_HOME/bin:$JEUS_HOME/lib/system:$JAVA_HOME/bin:$PATH
+    export DOMAIN_HOME=$JEUS_HOME/domains/jeus_domain
+    
+    # Set JVM-Option #################################################
+    #export JAVA_VM_PROPERTIES="${JAVA_VM_PROPERTIES} -Xms1024m -Xmx1024m "
+    ##################################################################
+    
+    # Set SCF ID NAME ################################################
+    if [ -z $SCF_ID ]; then SCF_ID="shinhanlife_dev"; fi
+    SCF_GROUP_ID="-Djeus.scf.group-id=${SCF_ID}"
+    
+    export SCF_ID
+    export SCF_GROUP_ID
+    ##################################################################
+    
+    # JEUS properties option(ex: -Djeus.scf.group-id=dev #######
+    START_OPTION="$SCF_GROUP_ID"
+    export START_OPTION
+    ##################################################################
+    
+    ## CSP ###########################################################
+    ## AWS ###########################################################
+    #export AWS_ACCESS_KEY=
+    #export AWS_SECRET_KEY=
+    #export AWS_SCF_GROUP=dev
+    #export AWS_REGION=ap-northeast-2
+    ##################################################################
+    
+    # export DOMAIN  #################################################
+    export DOMAIN_ID=2024011618
+    export LOG_HOME=${INSTALL_HOME}/logs
+    export SESSION_PROVIDER=RUNTIME
+    #export SESSION_PROVIDER=REDIS
+    export REDIS_ARCHITECTURE=CLUSTER
+    export REDIS_URI=redis://redis-cluster-leader.redis:6379,redis://redis-cluster-follower.redis:6379
+    
+    #export SERVER_NAME=server1
+    export SERVER_NAME=$HOSTNAME
+    #export BASE_ADDRESS=`hostname`
+    export BASE_ADDRESS=$HOSTNAME
+    export BASE_PORT=10000
+    export HTTP_PORT=8088
+
+    #encryption -keypath /sw/jeus8_5/domains/jeus_test_domain/config/security/security.key AES {PASSWORD}
+    export JKS_PASSWORD={AES}1IIqmhBYdqoP1I4vUnvyJg==
+
+    export APP_DIR=/sw/apps
+
+    export APP_NAME_1=app1
+    export APPLICATION_PATH_1=app1
+    #export WAR_NAME_1=edutest_jdk11.war
+    #export WAR_NAME_1=demo-v0.0.1.war
+    export CONTEXT_PATH_1=/
+
+    export DATASOURCE_ID_1=ds_mysql
+    export DATASOURCE_EXPORT_NAME_1=ds_mysql
+    export DATASOURCE_CLASS_NAME_1=com.mysql.cj.jdbc.MysqlConnectionPoolDataSource
+    export DATASOURCE_VENDOR_NAME_1=mysql
+    export DATABASE_IP_1=service-mysql.mysql.svc.cluster.local
+    export DATABASE_PORT_1=3306
+    export DATABASE_NAME_1=testdb
+    export DATABASE_USER_1=root
+    export DATABASE_PASSWORD_1={AES}5fHQAX94afUrq9EGff6GHvmEv4w4bF+9uIMNhQ7mUqo=
+    
+    # DOMAIN default set #############################################
+    #BASE_ADDRESS=`grep "${HOSTNAME}" /etc/hosts | awk '{print $1}'`
+    if [ -z $DOMAIN_ID ]; then export DOMAIN_ID=`date "+%m%d%H%M%S"`; fi
+    sed -i "s/%DOMAIN_ID%/${DOMAIN_ID}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $LOG_HOME ]; then export LOG_HOME=${INSTALL_HOME}/logs; fi
+    sed -i "s+%LOG_HOME%+${LOG_HOME}+g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $SESSION_PROVIDER ]; then export SESSION_PROVIDER="RUNTIME"; fi
+    sed -i "s/%SESSION_PROVIDER%/${SESSION_PROVIDER}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $REDIS_ARCHITECTURE ]; then export REDIS_ARCHITECTURE="CLUSTER"; fi
+    sed -i "s/%REDIS_ARCHITECTURE%/${REDIS_ARCHITECTURE}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $REDIS_URI ]; then export REDIS_URI="redis://localhost:6379"; fi
+    sed -i "s+%REDIS_URI%+${REDIS_URI}+g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $BASE_ADDRESS ]; then export BASE_ADDRESS=`hostname`; fi
+    sed -i "s/%BASE_ADDRESS%/${BASE_ADDRESS}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $SERVER_NAME ]; then export SERVER_NAME=`hostname`; fi
+    sed -i "s/%SERVER_NAME%/${SERVER_NAME}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $BASE_PORT ]; then export BASE_PORT=10000; fi
+    sed -i "s/%BASE_PORT%/${BASE_PORT}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $HTTP_PORT ]; then export HTTP_PORT=8088; fi
+    sed -i "s/%HTTP_PORT%/${HTTP_PORT}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $JKS_PASSWORD ]; then export JKS_PASSWORD=passwd; fi
+    sed -i "s^%JKS_PASSWORD%^${JKS_PASSWORD}^g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $HTTP_THREAD_MIN ]; then export HTTP_THREAD_MIN=10; fi
+    sed -i "s/%HTTP_THREAD_MIN%/${HTTP_THREAD_MIN}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $HTTP_THREAD_MAX ]; then export HTTP_THREAD_MAX=20; fi
+    sed -i "s/%HTTP_THREAD_MAX%/${HTTP_THREAD_MAX}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $APP_DIR ]; then export APP_DIR="/sw/apps"; fi
+    sed -i "s+%APP_DIR%+${APP_DIR}+g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $APP_NAME_1 ]; then export APP_NAME_1=app1; fi
+    sed -i "s/%APP_NAME_1%/${APP_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $APPLICATION_PATH_1 ]; then export APPLICATION_PATH_1=;fi
+    sed -i "s/%APPLICATION_PATH_1%/${APPLICATION_PATH_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $WAR_NAME_1 ]; then export WAR_NAME_1=;fi
+    sed -i "s/%WAR_NAME_1%/${WAR_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $APP_TYPE_1 ]; then export APP_TYPE_1=WAR; fi
+    sed -i "s/%APP_TYPE_1%/${APP_TYPE_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $CONTEXT_PATH_1 ]; then export CONTEXT_PATH_1=/; fi
+    sed -i "s+%CONTEXT_PATH_1%+${CONTEXT_PATH_1}+g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $NODE_JAVA_1 ]; then export NODE_JAVA_1=false; fi
+    sed -i "s/%NODE_JAVA_1%/${NODE_JAVA_1}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $APP_NAME_2 ]; then export APP_NAME_2=app2; fi
+    sed -i "s/%APP_NAME_2%/${APP_NAME_2}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $APPLICATION_PATH_2 ]; then export APPLICATION_PATH_2=;fi
+    sed -i "s/%APPLICATION_PATH_2%/${APPLICATION_PATH_2}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $WAR_NAME_2 ]; then export WAR_NAME_2=;fi
+    sed -i "s/%WAR_NAME_2%/${WAR_NAME_2}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $APP_TYPE_2 ]; then export APP_TYPE_2=WAR; fi
+    sed -i "s/%APP_TYPE_2%/${APP_TYPE_2}/g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $CONTEXT_PATH_2 ]; then export CONTEXT_PATH_2=/; fi
+    sed -i "s+%CONTEXT_PATH_2%+${CONTEXT_PATH_2}+g" ${DOMAIN_HOME}/config/domain.xml
+
+    if [ -z $NODE_JAVA_2 ]; then export NODE_JAVA_2=false; fi
+    sed -i "s/%NODE_JAVA_2%/${NODE_JAVA_2}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATASOURCE_ID_1 ]; then export DATASOURCE_ID_1=ds_mysql; fi
+    sed -i "s/%DATASOURCE_ID_1%/${DATASOURCE_ID_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATASOURCE_EXPORT_NAME_1 ]; then export DATASOURCE_EXPORT_NAME_1=ds_mysql; fi
+    sed -i "s/%DATASOURCE_EXPORT_NAME_1%/${DATASOURCE_EXPORT_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATASOURCE_CLASS_NAME_1 ]; then export DATASOURCE_CLASS_NAME_1=com.mysql.cj.jdbc.MysqlConnectionPoolDataSource; fi
+    sed -i "s/%DATASOURCE_CLASS_NAME_1%/${DATASOURCE_CLASS_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATASOURCE_VENDOR_NAME_1 ]; then export DATASOURCE_VENDOR_NAME_1=mysql; fi
+    sed -i "s/%DATASOURCE_VENDOR_NAME_1%/${DATASOURCE_VENDOR_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATABASE_IP_1 ]; then export DATABASE_IP_1=mysql-service.svc.cluster.local; fi
+    sed -i "s/%DATABASE_IP_1%/${DATABASE_IP_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATABASE_PORT_1 ]; then export DATABASE_PORT_1=3306; fi
+    sed -i "s/%DATABASE_PORT_1%/${DATABASE_PORT_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATABASE_NAME_1 ]; then export DATABASE_NAME_1=testdb; fi
+    sed -i "s/%DATABASE_NAME_1%/${DATABASE_NAME_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATABASE_USER_1 ]; then export DATABASE_USER_1=root; fi
+    sed -i "s/%DATABASE_USER_1%/${DATABASE_USER_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    if [ -z $DATABASE_PASSWORD_1 ]; then export DATABASE_PASSWORD_1=root; fi
+    sed -i "s/%DATABASE_PASSWORD_1%/${DATABASE_PASSWORD_1}/g" ${DOMAIN_HOME}/config/domain.xml
+    
+    # cloudserver.properties default set #############################################
+    if [ -z $LOG_HOME ]; then export LOG_HOME=${INSTALL_HOME}/logs; fi
+    sed -i "s+%LOG_HOME%+${LOG_HOME}+g" ${JEUS_HOME}/bin/cloudserver.properties
+    
+    # JEUS admin IP/PW
+    #if [ -z $JEUS_USER ]; then export JEUS_USER=wasadmin; fi
+    #if [ -z $PASSWORD ]; then export PASSWORD=jeusadmin1!; fi
+    if [ -z $JEUS_USER ]; then export JEUS_USER=administrator; fi
+    if [ -z $PASSWORD ]; then export PASSWORD=jeusadmin1!; fi
+
+
+    mkdir -p $LOG_HOME/`hostname`/dump $LOG_HOME/`hostname`/gclog

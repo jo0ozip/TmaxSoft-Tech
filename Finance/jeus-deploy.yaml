@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jeus-deployment
+  namespace: jeus8
+  labels:
+    app: jeus
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jeus
+  template:
+    metadata:
+      labels:
+        app: jeus
+    spec:
+      containers:
+      - name: jeus
+        #pod start command
+        command: ["sh", "/sw/script/start.sh"]
+        image: 192.168.1.1:5000/jeus8.5:latest
+        imagePullPolicy: Always
+        ports:
+        #health check server http port
+        - containerPort: 8088
+        #livenessProbe:
+        #  tcpSocket:
+        #    port: 8088
+        #  initialDelaySeconds: 60
+        #  periodSeconds: 10
+        #readinessProbe:
+        #  tcpSocket:
+        #    port: 8088
+        #  initialDelaySeconds: 60
+        #  periodSeconds: 10
+        #pod request/limit
+        #request value related hpa
+        resources:
+          limits:
+            cpu: 1500m 
+            memory: 1500Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        env:
+        - name: TZ
+          value: Asia/Seoul
+        - name: KUBERNETES_NAMESPACE
+          value: jeus8
+        - name: KUBERNETES_LABELS
+          value: app=jeus
+        - name: API_VERSION
+          value: v1
+        volumeMounts:
+        - name: jeus-domain-template-xml
+          mountPath: "/sw/script/domain.xml"
+          subPath: domain.xml
+        - name: jeus-env
+          mountPath: "/sw/script/env.sh"
+          subPath: env.sh
+        - name: jeus-start
+          mountPath: "/sw/script/start.sh"
+          subPath: start.sh
+      volumes:
+      - name: jeus-domain-template-xml
+        configMap:
+          name: jeus-domain-xml
+          defaultMode: 0755
+      - name: jeus-env
+        configMap:
+          name: sample-jeus-env
+          defaultMode: 0755
+      - name: jeus-start
+        configMap:
+          name: sample-jeus-start
+          defaultMode: 0755

@@ -1,0 +1,63 @@
+# lightweighting
+JEUS_HOME=/root/k8s/shinhanlife_jdk11/jeus/dockerfiles/jeus/jeus8.5
+DOMAIN_HOME=$JEUS_HOME/domains/domain1
+
+#cp ${JEUS_HOME}/lib/csp/kube* ${JEUS_HOME}/lib/system && \
+rm -rf ${JEUS_HOME}/lib/csp && \
+rm -rf ${DOMAIN_HOME}/servers/* && \
+rm -rf ${JEUS_HOME}/derby && \
+rm -rf ${JEUS_HOME}/docs && \
+rm -rf ${JEUS_HOME}/setup/build.xml && \
+rm -rf ${JEUS_HOME}/setup/domain-config-template.properties && \
+rm -rf ${JEUS_HOME}/setup/helper && \
+rm -rf ${JEUS_HOME}/setup/lib* && \
+rm -rf ${JEUS_HOME}/templates && \
+rm -rf ${JEUS_HOME}/UninstallerData && \
+rm -rf ${JEUS_HOME}/lib/client && \
+rm -rf ${JEUS_HOME}/lib/etc && \
+rm -rf ${JEUS_HOME}/lib/shared && \
+rm -rf ${JEUS_HOME}/lib/thirdparty && \
+rm -rf ${JEUS_HOME}/lib/tool && \
+rm -rf ${JEUS_HOME}/lib/systemapps/* && \
+rm -rf ${JEUS_HOME}/lib/system/bcprov-jdk15on-160.jar && \
+rm -rf ${JEUS_HOME}/lib/system/bctls-jdk15on-160.jar && \
+rm -rf ${JEUS_HOME}/lib/system/corba-csiv2-idl.jar && \
+rm -rf ${JEUS_HOME}/lib/system/corba-internal-api.jar && \
+rm -rf ${JEUS_HOME}/lib/system/corba-orb.jar && \
+rm -rf ${JEUS_HOME}/lib/system/derby* && \
+rm -rf ${JEUS_HOME}/lib/system/eclipselink.jar && \
+rm -rf ${JEUS_HOME}/lib/system/ehcache-scf-replication.jar && \
+rm -rf ${JEUS_HOME}/lib/system/ehcache-scf-replication-jar-with-dependencies.jar && \
+rm -rf ${JEUS_HOME}/lib/system/glassfish-corba-orb-4.1.1-b001.jar && \
+rm -rf ${JEUS_HOME}/lib/system/gmbal-api-only.jar && \
+rm -rf ${JEUS_HOME}/lib/system/hazelcast* && \
+rm -rf ${JEUS_HOME}/lib/system/jeus8.5.0.0-cloud-aws-provider-1.2.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jeus-uddi.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jeus-ws-proxy.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jext-gson-2.6.2.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jjwt-0.9.1.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jline.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jms-extension.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jsse14_repack.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/jaxp-ri.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/jsr105-impl-1.0.2.jar && \
+rm -rf ${JEUS_HOME}/lib/system/jxerces.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/lettuce-core-5.3.7.RELEASE.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/netty-all-4.1.63.Final.jar && \
+rm -rf ${JEUS_HOME}/lib/system/org.apache.felix.framework-5.4.0.jar && \
+rm -rf ${JEUS_HOME}/lib/system/org.osgi.core-6.0.0.jar && \
+rm -rf ${JEUS_HOME}/lib/system/pfl-asm.jar && \
+rm -rf ${JEUS_HOME}/lib/system/pfl-basic-4.1.2.jar && \
+rm -rf ${JEUS_HOME}/lib/system/pfl-dynamic.jar && \
+rm -rf ${JEUS_HOME}/lib/system/pfl-tf.jar && \
+rm -rf ${JEUS_HOME}/lib/system/proton-j-0.33.2_modified.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/reactive-streams-1.0.3.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/reactor-core-3.3.16.RELEASE.jar && \
+rm -rf ${JEUS_HOME}/lib/system/weld-core.jar && \
+rm -rf ${JEUS_HOME}/lib/system/wsdl4j.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/xalan.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/xercesImpl.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/xml-apis.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/xmlsec.jar && \
+#rm -rf ${JEUS_HOME}/lib/system/xsltc.jar && \
+rm -rf ${JEUS_HOME}/lib/system/yasson.jar

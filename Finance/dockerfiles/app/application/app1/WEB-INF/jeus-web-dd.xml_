@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<jeus-web-dd xmlns="http://www.tmaxsoft.com/xml/ns/jeus">
+  <!--
+  <use-jeus-login-manager>true</use-jeus-login-manager>
+  <properties>
+    <property>
+      <key>jeus.application.login.key</key>
+      <value>userid</value>
+    </property>
+  </properties>
+  -->
+</jeus-web-dd>

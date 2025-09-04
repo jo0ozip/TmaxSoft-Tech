@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-jeus-cloudserver-properties
+  namespace: jeus
+data:
+  cloudserver.properties: |
+    #!/bin/sh
+    ###############################################################################
+    #  This is a script for a JEUS Cloud Server environment.                      #
+    #  This uses the following environment variables.                             #
+    #                                                                             #
+    #  JAVA_HEAP_MEM        - JVM memory argument                                 #
+    #  JAVA_VM_OPTION       - JVM option                                          #
+    #  JAVA_VM_PROPERTIES   - JVM properties                                      #
+    #  JVM_LOG_DIR          - JVM log directory path                              #
+    #                                                                             #
+    #  Local variables :                                                          #
+    #    @@SERVER_NAME@@ : current server name                                    #
+    #    @@TIMESTAMP@@ : current time                                             #
+    #                                                                             #
+    #  For additional information, please refer to the JEUS Server Guide or       #
+    #  visit the following web sites.                                             #
+    #                                                                             #
+    #  - http://www.tmaxsoft.com(English)                                         #
+    #  - http://www.tmax.co.kr(Korean)                                            #
+    #  - http://www.tmaxchina.com.cn(Chinese)                                     #
+    #  - http://www.tmaxsoft.co.jp(Japanese)                                      #
+    #  - http://technet.tmaxsoft.com(English/Korean)                              #
+    ###############################################################################
+    
+    #
+    # For customizing JEUS Cloud Server environment.
+    #
+    
+    # set up JAVA_HEAP_MEM
+    #JAVA_HEAP_MEM="-Xmx1024m -XX:MaxPermSize=256m"
+    #JAVA_HEAP_MEM="-Xms2048m -Xmx2048m -Xgcpolicy:gencon -verbose:gc -Xverbosegclog:${INSTALL_HOME}/logs/gclog/gc_%pid.log"
+    JAVA_HEAP_MEM="-Xms1024m -Xmx1024m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -verbose:gc -XX:+UseG1GC -Xlog:gc:file=${INSTALL_HOME}/logs/$HOSTNAME/gclog/gc_%pid.log:time,pid,level,tags -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${INSTALL_HOME}/logs/$HOSTNAME/dump/ -Djeus.tm.noLogging=true -Djeus.cdi.enabled=false -Djeus.session.redis.use.async.update=true -Djeus.session.redis.use.async.update.timeout=2 -Djeus.session.shared.scope=redisSessionTest -Djeus.session.redis.use.update.with.change=true -Djeus.session.redis.backup.level=SET -Dserver.app1=http://sample-jeus-service:8088 -Dserver.app2=http://sample-jeus-service2:8088 -Dserver.sleep=30000"
+    
+    # set up JAVA_VM_OPTION
+    # Add jvm option
+    # ex) "-javaagent:/path/to/agent.jar -verbose:gc"
+    JAVA_VM_OPTION="${VM_OPTION}"
+    
+    # set up JAVA_VM_PROPERTIES
+    # Add jvm properties
+    # ex) "-Da=b -Dc=d"
+    JAVA_VM_PROPERTIES=${JAVA_VM_PROPERTIES}
+    
+    # set JVM Log Directory
+    # ex) "/logs/@@SERVER_NAME@@"
+    JVM_LOG_DIR=$LOG_HOME
+    
+    # set timestamp format
+    DATE_FORMAT=%Y%m%d.%H%M%S
+    
+    export JAVA_HEAP_MEM JAVA_VM_OPTION JAVA_VM_PROPERTIES JVM_LOG_DIR

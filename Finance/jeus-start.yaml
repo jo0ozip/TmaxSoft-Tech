@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-jeus-start
+  namespace: jeus8
+data:
+  start.sh: |
+    #!/bin/sh
+    cp -f /sw/script/domain.xml $DOMAIN_HOME/config/domain.xml
+    #cp -f /sw/script/cloudserver.properties /sw/jeus8.5/bin/cloudserver.properties
+    #rm -rf /sw/jeus8.5/lib/system/jeus8.5.0.0-cloud-kube-provider-1.0.jar
+    #rm -rf /sw/jeus8.5/lib/system/jeus-cloud-default-provider.jar
+    
+    . /sw/script/env.sh
+
+    ## standalone start script
+    # startCloudServer -u username -p password -server servername
+    #jeus8500-b266025
+    #${JEUS_HOME}/bin/startCloudServer -u administrator -p jeusadmin1! -domain jeus_domain -server ${SERVER_NAME} ${SCF_GROUP_ID} ${ADD_START_OPT}
+    #${JEUS_HOME}/bin/startCloudServer -u wasadmin -p jeusadmin1! -domain jeus_domain -server ${SERVER_NAME} ${SCF_GROUP_ID} ${ADD_START_OPT}
+    #sleep 9999999999999999999
+    ${JEUS_HOME}/bin/startCloudServer -domain jeus_domain -server ${SERVER_NAME} ${SCF_GROUP_ID} ${ADD_START_OPT}

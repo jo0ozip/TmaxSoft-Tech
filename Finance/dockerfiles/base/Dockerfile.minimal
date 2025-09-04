@@ -1,0 +1,43 @@
+FROM rockylinux:9.2-minimal
+
+#JDK_install
+RUN \
+  mkdir -p /usr/java/jdk && \
+#set microdnf repo
+  microdnf -y update && \
+  microdnf -y install glibc-locale-source && \
+  microdnf -y install glibc-langpack-en && \
+  microdnf -y install net-tools && \
+  microdnf -y install lsof && \
+  microdnf -y install telnet && \
+  microdnf -y install findutils && \
+  microdnf -y install gcc && \
+  microdnf -y install nc && \
+  microdnf -y install tar && \
+  microdnf -y install procps && \
+  microdnf -y install vim && \
+  microdnf -y install hostname && \
+  microdnf -y install libxcrypt-compat && \
+  microdnf -y install bind-utils && \
+#ap lib
+  microdnf -y install freetype && \
+  microdnf -y install fontconfig && \
+  microdnf -y clean all && \
+#Locale Set ko_KR.EUC-KR ko_KR.UTF-8
+  localedef -f EUC-KR -i ko_KR ko_KR.EUC-KR && \
+  localedef -f UTF-8 -i ko_KR ko_KR.UTF-8 && \
+  localedef -f UTF-8 -i en_US en_US.UTF-8 && \
+  ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime 
+
+COPY tmp/jdk /usr/java/jdk
+
+ENV JAVA_HOME /usr/java/jdk
+ENV PATH $JAVA_HOME/bin:$PATH
+#ENV LANG ko_KR.EUC-KR
+ENV LANG ko_KR.UTF-8
+#ENV LC_ALL ko_KR.EUC-KR
+
+#START
+#WORKDIR root
+#CMD ["/bin/ls", "-lh", "/root"]
+CMD ["/bin/bash", "-l"]

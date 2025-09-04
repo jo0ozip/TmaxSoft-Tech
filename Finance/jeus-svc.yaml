@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jeus-service
+  namespace: jeus8
+spec:
+  type: NodePort  #node port open, ClusterIP includes
+  selector:
+    app: jeus
+  ports:
+    - name: http
+      port: 8088
+      targetPort: 8088
+      nodePort: 30300
