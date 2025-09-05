@@ -1,0 +1,4 @@
+#!/bin/sh                                                                       
+
+source ${JEUS_HOME}/bin/conf/setenv.sh
+jeusadmin -host ${DAS_URL} -u $JEUS_USER -p $PASSWORD 

@@ -1,0 +1,45 @@
+#######################
+# INFO
+# make TmaxSoft-Public2
+# upd. 2025-09-02
+#######################
+
+#######################
+# Basic
+#######################
+FROM ImageRegistry/project:latest AS builder
+
+# WEBTOB ENV
+ENV WEBTOBDIR=webtob engine home
+ENV WEBTOB_LOG_HOME=${WEBTOBDIR}/log
+
+# WEBTOB
+RUN mkdir -p ${WEBTOBDIR} ${WEBTOB_LOG_HOME}
+COPY --chown=tmaxuser:tmaxuser webtob5/           ${WEBTOBDIR}/
+COPY --chown=tmaxuser:tmaxuser env/.bash_profile  ${WEBTOBDIR}/
+COPY --chown=tmaxuser:tmaxuser env/license/       ${WEBTOBDIR}/license/
+COPY --chown=tmaxuser:tmaxuser env/scripts/       ${WEBTOBDIR}/bin/
+COPY --chown=tmaxuser:tmaxuser env/m_file/http.m  ${WEBTOBDIR}/config/
+
+
+
+#######################
+#  Multi-stage
+#######################
+FROM ImageRegistry/project:latest
+
+# WEBTOB ENV
+ENV WEBTOBDIR=webtob engine home
+ENV WEBTOB_LOG_HOME=${WEBTOBDIR}/log
+ENV PATH="${WEBTOBDIR}/bin:${PATH}"
+ENV LD_LIBRARY_PATH="${WEBTOBDIR}/lib:${LD_LIBRARY_PATH}"
+
+COPY --chown=tmaxuser:tmaxuser --from=builder ${WEBTOBDIR} ${WEBTOBDIR}
+COPY --chown=tmaxuser:tmaxuser --from=builder ${WEBTOB_LOG_HOME} ${WEBTOB_LOG_HOME}
+
+# USER && HOME
+USER tmaxuser
+WORKDIR ${WEBTOBDIR}
+
+# Start
+ENTRYPOINT ["webtob.sh"]
