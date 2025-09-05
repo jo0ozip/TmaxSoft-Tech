@@ -1,0 +1,49 @@
+#######################
+# INFO
+# make TmaxSoft-Public2 
+# upd. 2025-09-04
+#######################
+
+#######################
+###  Basic
+#######################
+FROM ImageRegistry/project:latest AS builder
+
+# JEUS ENV
+ENV JEUS_HOME=jeus engine home
+ENV JEUS_LOG_HOME=${JEUS_HOME}/logs
+ENV DOMAIN_NAME=jeus domain name
+
+# JEUS
+RUN mkdir -p ${JEUS_HOME} ${JEUS_LOG_HOME}/{gclog,dump,jvm} ${JEUS_HOME}/domains/${DOMAIN_NAME}/auto-deploy
+
+COPY --chown=webuser:webuser jeus8/ ${JEUS_HOME}/
+COPY --chown=webuser:webuser env/.bash_profile  ${JEUS_HOME}/
+COPY --chown=webuser:webuser env/bin/           ${JEUS_HOME}/bin/
+COPY --chown=webuser:webuser env/lib/           ${JEUS_HOME}/lib/
+COPY --chown=webuser:webuser env/license/       ${JEUS_HOME}/license/
+COPY --chown=webuser:webuser env/scripts/       ${JEUS_HOME}/bin/
+COPY --chown=webuser:webuser env/jdbc/          ${JEUS_HOME}/lib/datasource/
+COPY --chown=webuser:webuser env/domain.xml     ${JEUS_HOME}/domains/${DOMAIN_NAME}/config/
+
+
+#######################
+###  Multi-stage
+#######################
+FROM ImageRegistry/project:latest
+
+# JEUS ENV
+ENV JEUS_HOME=jeus engine home
+ENV JEUS_LOG_HOME=${JEUS_HOME}/logs
+ENV DOMAIN_NAME=jeus domain name
+ENV PATH="${JEUS_HOME}/bin:${JEUS_HOME}/lib/system:${PATH}"
+
+COPY --chown=tmaxuser:tmaxuser --from=builder ${JEUS_HOME} ${JEUS_HOME}
+COPY --chown=tmaxuser:tmaxuser --from=builder ${JEUS_LOG_HOME} ${JEUS_LOG_HOME}
+
+# USER && HOME
+USER tmaxuser
+WORKDIR ${JEUS_HOME}
+
+# Start
+ENTRYPOINT ["jeus.sh"]

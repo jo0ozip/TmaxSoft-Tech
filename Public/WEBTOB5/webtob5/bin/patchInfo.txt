@@ -1,0 +1,480 @@
+*****************************************************************************
+* WebtoB 5.0 SP0 Fix#4  - Released (2020.12.15)                             *
+*****************************************************************************
+* B340.0.0 - 5.0.0.4.340 - 2024.11.18
+    * Rollback patch about http2 for the stable version.
+* B339.0.0 - 5.0.0.4.339 - 2024.11.18
+    * Fix a bug that that caused the core to occur when http2 request body is large.
+    * Fix a bug that disconnect client connection when the body of an h2c upgrade request is read separately from the header.
+    * Fix a bug that do not work properly when there is no content-length in the http2 request with body.
+    * Fix a bug that a 500 error response is intermittently sent to the client when jeus gracefully shuts down in a WJP connection.
+* B338.0.0 - 5.0.0.4.338 - 2024.11.04
+    * Fix a bug that client status information is not initialized when upgrading h2c.
+    * Fix a bug that occur memory leak in http2-prior-knowledge.
+    * Fix a bug that a goaway occurs in htmls when a response is sent before receiving a DATA frame and a DATA frame is received afterwards.
+* B337.0.0 - 5.0.0.4.337 - 2024.11.02
+    * Fix bugs that h2c upgrade and prior knowledge usages
+* B336.0.0 - 5.0.0.4.336 - 2024.10.28
+    * Fix a bug that causes core when a request is sent to http2 upgrade + no ssl
+    * Modify not to use libcrypt.
+* B335.0.0 - 5.0.0.4.335 - 2024.10.17
+    * Modify TTLdnsResolve to operate in the async way
+    * Refactoring failover/failback logic
+* B334.0.0 - 5.0.0.4.334 - 2024.10.07
+    * Modify the failover server to failback after checking the status of the server.
+* B333.0.0 - 5.0.0.4.333 - 2024.09.30
+    * Modifying to use http2 priority knowledge in non-ssl situations.
+* B332.0.0 - 5.0.0.4.332 - 2024.09.10
+    * Re-reflect rollback lists (WB5-521, WB5-523).
+* B331.0.0 - 5.0.0.4.331 - 2024.09.10
+    * Rollback WB5-516, WB5-517, WB5-518, WB5-521, WB5-523 for the stable version.
+* B330.0.0 - 5.0.0.4.330 - 2024.09.09
+    * Fix a bug that requests are only sent to the first connection of the server when the server schedule is FA in a WJP connection.
+* B329.0.0 - 5.0.0.4.329 - 2024.09.05
+    * Fixed a bug that caused the core to occur when the arg parameter is NULL in the log_request_msg().
+* B328.0.0 - 5.0.0.4.328 - 2024.09.05
+    * Modify the Rproxy's read event to be turned on again when the client is disconnected while the Rproxy's read event is turned off.
+* B327.0.0 - 5.0.0.4.327 - 2024.09.02
+    * Fix a bug that When using X-Fowered-For for "NODE.RPAFheader" with not in perfectly matched case.
+* B326.0.0 - 5.0.0.4.326 - 2024.08.26
+    * Fixed a bug that caused 503 errors when accessing uri or ext sections with svrname=html, svrtype=html.
+    * Add "default html server","default html servergroup" and remove server and servergroup from svrinfo and svginfo when server type= html.
+    * Add the st -v command to wsadmin.
+    * Fix a bug that outputs mixed time log formats when you set different time log formats for vhost
+* B325.0.0 - 5.0.0.4.325 - 2024.07.22
+    * Fix a bug that response with 500 status code is sent when the response status code set in rewrite is 308 permanent redirect.
+* B324.0.0 - 5.0.0.4.324 - 2024.07.11
+    * When using h2c, fix a bug that causes "[ERR-05239] The stream id(%d) had ready process." in which "sid=1" is used twice when connecting for the first time
+* B323.0.0 - 5.0.0.4.323 - 2024.07.11
+    * Fixed a bug that disconnects in h2c situations because of the overhead_count initialization location
+* B322.0.0 - 5.0.0.4.322 - 2024.07.09
+    * Fixing a bug where only the first ssl_protocols are working when you set up different ssl_protocols on the same port
+    * Fixed a bug where incorrect value was displayed when using %x format in fieldvalue.
+* B321.0.0 - 5.0.0.4.321 - 2024.06.10
+    * Fixed a bug when using wjp and url rewrite does not work after B309
+    * Fixing a memory leak when using FieldRegexp settings
+* B320.0.0 - 5.0.0.4.320 - 2024.06.05
+    * Fixed an issue where the response header is not released if the client disconnects first.
+    * Fix a bug where compressed stream memory was not released if the client connection was disconnected first when using compression.
+    * Fix a bug that ssl memory is not released when using jsv ssl
+* B319.0.0 - 5.0.0.4.319 - 2024.05.27
+    * Fixed an issue where a core dump occurred when the first index server in the reverse proxy group was unavailable
+* B318.0.0 - 5.0.0.4.318 - 2024.05.22
+    * Fixed a bug where the rproxy websocket server did not close properly in the event of an error during the SSL write process.
+* B317.0.0 - 5.0.0.4.317 - 2024.05.21
+    * Add failover and failback functionality to the reverse proxy group (distinct from existing load balancing features).
+* B316.0.0 - 5.0.0.4.316 - 2024.05.12
+    * Fixed an issue where client connections were not properly closed on rproxy WebSocket SSL.
+* B315.0.0 - 5.0.0.4.315 - 2024.05.07
+    * Fixed a bug that can't boot when using sun os version up to B309
+* B314.0.0 - 5.0.0.4.314 - 2024.04.15
+    * Fixed a bug that failed to handle the next header frame ,because stream_pending was not turned off.
+* B313.0.0 - 5.0.0.4.313 - 2024.04.12
+    * Added Options and functions for Proxy protocol parsing
+    * Fixed a bug that causes Bad Request when the %20 string is entered
+* B311.0.0 - 5.0.0.4.311 - 2024.03.27
+    * Fix a bug that HTH is not be properly connected due to a timing issue when HTL is restarted on Windows.
+* B310.0.0 - 5.0.0.4.310 - 2024.03.26
+    * Add configuration "OnlyDecodeUriPath" and function to decode only uri path.
+* B309.0.0 - 5.0.0.4.309 - 2024.03.18
+    * Fix a bug that, query string and jsv session isn't added when using reverse proxy connection.
+* B308.0.0 - 5.0.0.4.308 - 2024.02.26
+    * Fix a bug that dequeues server queue when reply to jeus for WSProc connection registration.
+    * Fix a bug that sending ping on WSProc connection only when receiving websocket response.
+    * Fix a bug that send an HTTP error response to the WebSocket client when disconnects WSProc connection due to an error.
+* B307.0.0 - 5.0.0.4.307 - 2024.02.14
+    * Modify to compare the Transfer-Encoding field value case-insensitively.
+* B306.0.0 - 5.0.0.4.306 - 2024.02.12
+    * Fix a bug that WSProc does not operate properly when MAXProc does not match jeus settings and JSV setting is not at the beginning of SERVER config.
+    * Modify to send the Transfer-Encoding header of chunked requests to WJP server.
+    * Fix a bug that access the cleaned rproxy.ctx.
+* B305.0.0 - 5.0.0.4.305 - 2024.02.05
+    * Fix a bug that websocket request is no longer processed when three or more websocket frames are read in one packet.
+* B304.0.0 - 5.0.0.4.304 - 2024.01.29
+    * Add AllowEncodedSlashes to change "/" to url decode.
+    * Fix a bug that WSProc does not operate properly.
+    * Fix a bug that discard websocket messages without queuing when using WJP websocket.
+    * Fix a bug that the websocket response is sent to a different client because the client id is not unique.
+    * Fix a bug that dequeues server queue when receiving WJP websocket_push message.
+    * Fix a bug that can not be processed when reading multiple websocket frames in one packet.
+    * Fix a bug that disconnects the client when a websocket request for more than 16384 bytes is received in one websocket frame.
+* B303.0.0 - 5.0.0.4.303 - 2024.01.15
+    * Fix a bug that WJP connection can be scheduled during health check.
+* B302.0.0 - 5.0.0.4.302 - 2024.01.08
+    * Fixed a bug that ERRORDOCUMENT was not applied for HEAD method.
+* B300.0.0 - 5.0.0.4.300 - 2023.12.18
+    * Fix a bug that proxy protocol header is not sent when the connection with the client is terminated while connecting to the tcpgw server.
+    * Fix a bug that wscfl is compiled even if inmemory size overflows for edge case.
+    * Fix a bug that core occurrs when using %o as USERLOGFORMAT and there is no response body
+* B299.0.0 - 5.0.0.4.299 - 2023.12.11
+    * Fix a bug that wscfl is compiled even if inmemory size overflows.
+    * Fix a bug that core occurs when wblog was left before the shared memory value was initialized.
+    * Fix a bug that do not detach shared memory if wsm is terminated normally during the shared memory attach process.
+* B298.0.0 - 5.0.0.4.298 - 2023.12.04
+    * Fix a bug where webtob dose not send responses when requesting certain domains using reverse proxy.
+    * Fix a bug that reverse_proxy.ctx.client_connection is not cleared when client closes connection before server connection is established.
+* B297.0.0 - 5.0.0.4.297 - 2023.11.27
+    * Overhead count was added in preparation for rapid reset attacks
+* B296.0.0 - 5.0.0.4.296 - 2023.11.20
+    * Fix a bug with memory leak when disconnecting client during SSL hand shake and when disconnecting JSV server connected by SSL
+* B295.0.0 - 5.0.0.4.295 - 2023.11.06
+    * Added RequiredCiphersV1_3 settings to proxy_ssl section and ssl section.
+* B295.0.0 - 5.0.0.4.295 - 2023.11.06
+    * Fix a bug that does not initialize the flag and server index for responded stream.
+* B294.0.0 - 5.0.0.4.294 - 2023.10.30
+    * Fix a bug that affected response to other streams (but same client) when received a chunked msg from JEUS as a response to a client that had previously received an RST_STREAM frame.
+* B293.0.0 - 5.0.0.4.293 - 2023.10.23
+    * Fix a bug that the read event cannot be activated in SSL WebSocket environment under high load
+* B292.0.0 - 5.0.0.4.292 - 2023.10.09
+    * Add *REVERSE_PROXY.Options="TTLResolveDNS" setting.
+* B291.0.0 - 5.0.0.4.291 - 2023.09.25
+    * Fix a bug that parses incorrectly when the wjp response contains the isHttp2 attribute_id
+    * Change the Connection header to close when forwarding the wjp error response to the client
+* B290.0.0 - 5.0.0.4.290 - 2023.09.18
+    * Fix a bug that did not work in TLSv1.3
+    * Fix a bug that rproxy server is closed immediately after connection
+* B289.0.0 - 5.0.0.4.289 - 2023.09.11
+    * Fix a bug that core occurs when AlwaysResolveDNS and rproxy persistent connection is set together.
+    * Fix a bug that AlwaysResolveDNS leaks connection before resolving DNS
+    * Change inmemory trace default value from 'Y' to 'N'
+* B288.0.0 - 5.0.0.4.288 - 2023.09.04
+    * Add Dynamically generated CORS from Regular Expression
+* B287.0.0 - 5.0.0.4.287 - 2023.08.21
+    * Add parameters from Requiredciphers for security purposes
+* B286.0.0 - 5.0.0.4.286 - 2023.08.14
+    * Fix a bug that rproxy server for http2 client is not closed in premature client close.
+* B285.0.0 - 5.0.0.4.285 - 2023.08.07
+    * Fix a bug that rproxy server is not closed when ctx is wrong before timeout.
+    * Fix a bug that hth crashes when client receives chunked response periodically.
+* B284.0.0 - 5.0.0.4.284 - 2023.07.17
+    * Fix a bug that webtob crashes when trying to respond to closed client
+    * Fix a bug that hth crashes while processing http2 stream list
+* B283.0.0 - 5.0.0.4.283 - 2023.07.10
+    * Fix side effect in B282.0.0 for HTTP2 RST_STREAM frame 
+    * Change WJPv2 remote ip to send only webtob's client ip
+    * Add direct_remote_ip for wjp remote ip
+* B282.0.0 - 5.0.0.4.282 - 2023.07.03
+    * Fix a bug that clip is not reset after receiving RST_STREAM frame in HTTP2
+    * Fix a bug that rpinfo being free while using dynamic proxy
+* B281.0.0 - 5.0.0.4.281 - 2023.06.27
+    * Change to disconnect wjp connection when a response is sent before HTTP/2.0 request DATA FRAME is fully received.
+    * Fix a bug that core occurs when getting stream pointer from stream id
+    * Change WJP remote ip to send only webtob's client ip
+* B280.0.0 - 5.0.0.4.280 - 2023.06.05
+    * Fix a bug that core occurs while managing reverse_proxy.ctx
+* B279.0.0 - 5.0.0.4.279 - 2023.05.29
+    * Fix a bug that returns wrong value after HTH0499 log
+    * Fix a bug that accessing NULL client_connection pointer when reverse proxy closes on websocket connection
+    * Add AlwaysResolveDNS option in *REVERSE_PROXY Options
+    * Fix a bug that exception is not handled for the case of reading HEADER frame and DATA frame as one packet when requesting HTTP/2
+    * Fix a bug that the wsracd module is not executed with -k option.
+* B278.0.0 - 5.0.0.4.278 - 2023.05.15
+    * Fix a bug that using access log format (%o) in response to cache
+    * Fix a bug that the wsracd module failed to run.
+* B277.0.0 - 5.0.0.4.277 - 2023.05.02
+    * Fix a bug that using access log format (%o) in response to compression
+* B276.0.0 - 5.0.0.4.276 - 2023.04.27
+    * Change USERLOGFORMAT option(%o).
+    * Change limitation of request uri path length from 2048 byte to 8196 byte.
+* B275.0.0 - 5.0.0.4.275 - 2023.04.17
+    * Fixed a bug that ERRORDOCUMENT was not applied for 405 response.
+* B274.0.0 - 5.0.0.4.274 - 2023.03.27
+    * Change USERLOGFORMAT option(%o, %l) and remove USERLOGFORMAT(%y).
+* B273.0.0 - 5.0.0.4.273 - 2023.03.13
+    * Change the timing for sending the proxy protocol header from sending the first request to when the connection is established.
+    * Fixed a bug of load balancing with wrong HTH due to overflow and recvfd process failure.
+* B272.0.0 - 5.0.0.4.272 - 2023.03.02
+    * Upgrade wbssl-1.1.1t for Windows.
+* B271.0.0 - 5.0.0.4.271 - 2023.02.20
+    * Upgrade WBSSL from 1.1.1q to 1.1.1t.
+    * Fixed a bug that every request contains proxy protocol header.
+    * Fixed a bug that logs related to ssl handshake, which had been only in tracelog, were also left in systemlog.
+* B270.0.0 - 5.0.0.4.270 - 2023.02.13
+    * Fixed bug where COM-00061 errorlog is output even though there is no actual error (for windows)
+* B269.0.0 - 5.0.0.4.269 - 2023.02.08
+    * Fixed a bug that reverse proxy server is not closed after timeout.
+    * Fixed a bug that wsadmin does not turn on when booting with windows service
+* B268.0.0 - 5.0.0.4.268 - 2023.01.09
+    * Fixed a bug that the status of JSV type service statistical information was displayed regardless of Svrname setting.
+* B267.0.0 - 5.0.0.4.267 - 2022.12.26
+    * Fixed a bug that logs related to ssl, which had been only in tracelog, were also left in systemlog.
+    * Fixed a bug that certain logs were in inmemory trace only at trace level
+    * Fix a bug that JSV type service statistical information (st -s) was displayed incorrectly
+    * Fix a bug that timed out when client read and write occurred at the same time in the worker
+* B266.0.0 - 5.0.0.4.266 - 2022.12.19
+    * Change to send 301 response with path only when the last '/' is omitted in user's request
+* B265.0.0 - 5.0.0.4.265.0 - 2022.12.12
+    * Change that Dynamic Proxy works normally even if *REVERSE_PROXY setting does not exist.
+    * Change that error response when *ADMIN.WebStatuspath is not set.
+    * Fix a bug that multiple stream is not processed when using HTTP/2
+    * Add proxy protocol v1 writer
+* B264.0.0 - 5.0.0.4.264.0 - 2022.12.09
+    * Fix a bug that lock is not applied when inmemory=Y and level="trace" are set together.
+* B263.0.0 - 5.0.0.4.263.0 - 2022.12.08
+    * Add missing shared memory variable for Windows
+* B262.0.0 - 5.0.0.4.262.0 - 2022.12.06
+    * Add *LOGLEVEL.inmemory and *LOGLEVEL.inmemory_count
+    * Fix missing or incorrect parts during merge (VER_5_0_0_2_B3_127_56)
+* B261.0.0 - 5.0.0.4.261.0 - 2022.11.28
+    * Add logs for spri rescheduling for hth
+    * Add *ADMIN.SslFlag/SslName.
+    * Fix a bug that "Premature client close" log appear when connection to reverse proxy server is closed.
+* B260.0.0 - 5.0.0.4.260.0 - 2022.11.22
+    * Upgrade WBSSL 1.1.1q for Windows.
+* B259.0.0 - 5.0.0.4.259.0 - 2022.11.21
+    * Fix a bug that close server/client connections when processing incomplete rproxy header.
+* B258.0.0 - 5.0.0.4.258.0 - 2022.11.18
+    * Add *ADMIN and remove *NODE.AmdinPort/webstatusPath/AdminAllowIp.
+      * ADMIN.Port # "9999"
+      * ADMIN.Listen # "127.0.0.1:9999"
+      * ADMIN.WebStatusPath # "webstat"
+      * ADMIN.AllowIp # "all"
+    * Upgrade WBSSL from 1.1.1p to 1.1.1q.
+* B257.0.0 - 5.0.0.4.257.0 - 2022.11.11
+    * Fix a bug that processing already closed client.
+* B256.0.0 - 5.0.0.4.256.0 - 2022.11.10
+    * Fix a bug that reverse proxy request processing without defining *REVERSE_PROXY when using urlRewrite.
+    * Add avg from Webstatus serviceInfo response.
+    * Fix a bug that checking value for already freed on reverse proxy.
+* B255.0.0 - 5.0.0.4.255.0 - 2022.11.07
+    * Add reqs, processCount, queueCount from Webstatus serverInfo response.
+* B254.0.0 - 5.0.0.4.254.0 - 2022.10.17
+    * Fix a bug of flow control by websocket message
+* B253.0.0 - 5.0.0.4.253.0 - 2022.10.10
+    * Fix a bug that read_climsg_data_cont does not allocate wjp header before getting request_level_ping from spr.
+    * Add summary thread info from Webstatus response.
+* B252.0.0 - 5.0.0.4.252.0 - 2022.10.05
+    * Fix a bug of core occurrence with read event of ssl worker.
+* B251.0.0 - 5.0.0.4.251.0 - 2022.10.02
+    * Change that add Unique_IP from Webstatus response.
+    * Fix a bug where existing data came in by ssl offset during Websocket Message.
+* B250.0.0 - 5.0.0.4.250.0 - 2022.09.26
+    * Fix a bug that an exception code for event processing.
+    * Change remove version info from Webstatus response.
+* B249.0.0 - 5.0.0.4.249.0 - 2022.09.19
+    * Add *NODE.WebStatusPath.
+    * Add exception codes for event processing.
+    * Add *NODE.AdminAllowIp.
+* B248.0.0 - 5.0.0.4.248.0 - 2022.09.12
+    * Upgrade WBSSL from 1.1.1o to 1.1.1p.
+* B247.0.0 - 5.0.0.4.247.0 - 2022.09.05
+    * Add Webstatus for JSON response.
+    * Fix a bug that incorrect header pointer was used when handling multi-range requests.
+* B246.0.0 - 5.0.0.4.246.0 - 2022.08.29
+    * Modify that response header Status-Line valid check.
+* B245.0.0 - 5.0.0.4.245.0 - 2022.08.11
+    * Support OCSP stapling.
+    * Fix a bug that when use jsv server, compression ratio in accesslog was displayed even though it is not compressed.
+    * Fix a bug that content-length was doubled in the accesslog when thare is a content-length in th response from jsv(wjp2)
+    * Fix a but that '%b' in accesslog is incorrect when JSV response(WJP2) is chunked.
+* B244.0.0 - 5.0.0.4.244.0 - 2022.08.01
+    * Change error response code when denied by method when JSV server request.
+* B243.0.0 - 5.0.0.4.243.0 - 2022.07.25
+    * Fix a bug that spin lock does not work properly in 64-bit windows.
+    * Fix a but that '%b' in accesslog is incorrect when JSV response(WJP2) is chunked.
+* B242.0.0 - 5.0.0.4.242.0 - 2022.07.11
+    * Fix a bug core occurrence if server process is null.
+* B241.0.0 - 5.0.0.4.241.0 - 2022.07.04
+    * Fix a bug to close websocket connection in pending-close situation.
+    * Fix a bug to callback up to the maximum task(1024) that can be received from worker threads at a time.
+    * Change to work *ACCESS.Method.
+* B240.0.0 - 5.0.0.4.240.0 - 2022.06.27
+    * Fix a bug that does not write to the client when compression of Empty body response.
+    * Fix a bug in which HTL was blocked by adding IPCPortRCVTimeO setting to NODE section and adding timeout function to HTL IPCBasePort.
+* B239.0.0 - 5.0.0.4.239.0 - 2022.06.13
+    * Downgrade linux glibc version to 2.12.
+    * Fix a bug that does not write to the client when compression of Empty body response.
+* B238.0.0 - 5.0.0.4.238.0 - 2022.06.06
+    * Fix a bug that shows as running in windows service even after wsboot fails.
+    * Modify that print SSL_CLIENT_CERT_VERIFY from debug log to trace log.
+* B237.0.0 - 5.0.0.4.237.0 - 2022.05.30
+    * Upgrade WBSSL from 1.1.1n to 1.1.1o.
+    * Fix a bug that the header was broken when set-cookie, multiple content-type headers are received.
+* B236.0.0 - 5.0.0.4.236.0 - 2022.05.23
+    * Fix a bug in parsing incorrect field name and value when multiple content-type headers are received.
+    * Add RewriteCond variable(SSL_CLIENT_CERT_VERIFY).
+    * Add and optimize websocket-related logs.
+* B235.0.0 - 5.0.0.4.235.0 - 2022.05.16
+    * Modify to combine headers and append values when multiple content-type headers are included in the response.
+* B234.0.0 - 5.0.0.4.234.0 - 2022.05.09
+    * Fix a bug that did not write shutdown message through ssl to jeus when shutdown webtob connected by jsvssl.
+* B233.0.0 - 5.0.0.4.233.0 - 2022.05.02
+    * Fix the bug that hth crashes when convert ntohl at SunOS Sparc.
+    * Fix the bug that hth crashes when print NULL pointer at SunOS Sparc.
+* B232.0.0 - 5.0.0.4.232.0 - 2022.04.25
+    * Change patch info command to read from file.
+    * Fix a bug that wbssl library was linked dynamically on SunOS.
+* B231.0.86 - 5.0.0.4.86.0 - 2022.04.11
+    *  Fix a bug about unreachable error and grammatical error on SunOS.
+* B231.0.85 - 5.0.0.4.85.0 - 2022.04.06
+    *  Fix a bug that renegotiate when RenegotiationLevel is set to disable.
+* B231.0.84 - 5.0.0.4.84.0 - 2022.04.01
+    *  Fix a bug that reset client before compress complete in Reverse Proxy.
+* B231.0.83 - 5.0.0.4.83.0 - 2022.04.01
+    *  Fix a bug that wrong count routing information by sticky session to monitoring.
+* B231.0.82 - 5.0.0.4.82.0 - 2022.03.31
+    *  Upgrade WBSSL from 1.1.1l to 1.1.1n.
+* B231.0.81 - 5.0.0.4.81.0 - 2022.03.15
+    *  Fix a bug that does not appear routing information by sticky session to monitoring.
+* B231.0.80 - 5.0.0.4.80.0 - 2022.03.15
+    *  Add compression in Reverse Proxy(*REVERSE_PROXY.Compression,*REVERSE_PROXY.CompressiomMinSize).
+* B231.0.79 - 5.0.0.4.79.0 - 2022.03.04
+    *  Fix a bug where second HTTP/2.0 request does not work in SNI.
+* B231.0.78 - 5.0.0.4.78.0 - 2022.03.04
+    *  Change dynamic header count 30 to 60.
+* B231.0.77 - 5.0.0.4.77.0 - 2022.02.22
+    *  Add routing information by sticky session to monitoring.
+* B231.0.76 - 5.0.0.4.76.0 - 2022.02.21
+    *  Fix a bug with reverse proxy & http 1.0 : close connection response.
+* B231.0.75 - 5.0.0.4.75.0 - 2022.02.16
+    * Add an option that does not include a header related to x-forwarded in Reverse Proxy.
+* B231.0.74 - 5.0.0.4.74.0 - 2022.02.15
+    * Fix the bug that crash when receiving DATA FRAME including END_STREAM flag in HTTP/2 PUT request.
+* B231.0.73 - 5.0.0.4.73.0 - 2022.02.09
+    * Fix the bug in the status control of the service.
+* B231.0.72 - 5.0.0.4.72.0 - 2022.02.03
+    * Add alias for accesslog format(combinedIO) and USERLOGFORMAT option(%I, %O).
+* B231.0.71 - 5.0.0.4.71.0 - 2022.01.20
+    * Fix bug that is treated as FCGI because the variable is not initialized.
+* B231.0.70 - 5.0.0.4.70.0 - 2022.01.17
+    * Fix bugs caused by client disconnection when write to server(expect 100-continue).
+* B231.0.69 - 5.0.0.4.69.0 - 2022.01.04
+    * Add an access log to the verboseLogMode(L).
+* B231.0.68 - 5.0.0.4.68.0 - 2021.12.22
+    * Fixing the problem of increasing memory because the Client certificate is not X509_Free in the MTLS situation.
+* B231.0.67 - 5.0.0.4.67.0 - 2021.12.17
+    * Change to discard response from scheduled spr when read RST_STREAM frame in HTTP/2.
+* B231.0.66 - 5.0.0.4.66.0 - 2021.11.22
+    * Fix a bug that does not clear the existing address in case of reverse proxy connection failure.
+* B231.0.65 - 5.0.0.4.65.0 - 2021.11.15
+    * Fix a bug that crash when not clear stream while processing POST queued HEADERS FRAME in HTTP/2.
+* B231.0.64 - 5.0.0.4.64.0 - 2021.11.10
+    * Change the processing method of "Append" in the Headers section.
+* B231.0.63 - 5.0.0.4.63.0 - 2021.11.08
+    * Fix the bug during the duplicate service call response check.
+* B231.0.62 - 5.0.0.4.62.0 - 2021.11.05
+    * Fix the bug where the header of the WJP2 message is missing when requesting POST.
+* B231.0.61 - 5.0.0.4.61.0 - 2021.10.20
+    * Fix bugs caused by client disconnection when write to server.
+* B231.0.60 - 5.0.0.4.60.0 - 2021.10.19
+    * Modify the issue that occurs when NULL printf with SunOs Bug.
+* B231.0.59 - 5.0.0.4.59.0 - 2021.09.30
+    * Correct errors that occur when reading the request body in the queue of reverse proxy.
+* B231.0.58 - 5.0.0.4.58.0 - 2021.09.27
+    * Change that the read-timeout of the JSV server does not occur continuously when the system time was changed.
+* B231.0.57 - 5.0.0.4.57.0 - 2021.09.10
+    * Fix a bugs that the value of the connection header was not initialized in HTTP/2 request when suspend/resume executed.
+* B231.0.56 - 5.0.0.4.56.0 - 2021.09.09
+    * Upgrade WBSSL from 1.1.1k to 1.1.1l.
+* B231.0.55 - 5.0.0.4.55.0 - 2021.08.27
+    * Fix bugs caused by server disconnection when writing websocket data.
+* B231.0.54 - 5.0.0.4.54.0 - 2021.08.18
+    * Fixed a bug when multiple filters were used.
+* B231.0.53 - 5.0.0.4.53.0 - 2021.08.12
+    * Fix a bug that crash when receiving DATA FRAME after spr_close while processing POST queued HEADERS FRAME in HTTP/2.
+* B231.0.52 - 5.0.0.4.52.0 - 2021.08.04
+    * Fix a bug with reverse proxy & http 1.0 : close connection response
+* B231.0.51 - 5.0.0.4.51.0 - 2021.07.30
+    * Add configurable functions to 'HEADES' section : AppendRequest,SetRequest,UnsetRequest,EchoRequest.
+* B231.0.50 - 5.0.0.4.50.0 - 2021.07.28
+    * Fix a bug that crash when receive HTTP/2 request in case of h2c connection.
+* B231.0.49 - 5.0.0.4.49.0 - 2021.07.27
+    * Fix bug where VERIFYCLIENT(mTLS) does not work in SNI.
+* B231.0.48 - 5.0.0.4.48.0 - 2021.07.22
+    * Fix bugs where regular expression configuration fails when using $.
+* B231.0.47 - 5.0.0.4.47.0 - 2021.07.21
+    * Add log when receive SUSPEND, RESUME request.
+* B231.0.46 - 5.0.0.4.46.0 - 2021.07.19
+    * Fix bug when receive PRIORITY Flags while using HTTP/2.
+* B231.0.45 - 5.0.0.4.45.0 - 2021.07.07
+    * Fix errors when using expected: 100-continue in reverse proxy.
+* B231.0.44 - 5.0.0.4.44.0 - 2021.06.25
+    * Fix to disconnect the request client when the reverse proxy server is disconnected.
+* B231.0.43 - 5.0.0.4.43.0 - 2021.06.25
+    * Fix WBSSL-1.1.1k dynamic link ( only for SunOs )
+* B231.0.42 - 5.0.0.4.42.0 - 2021.06.24
+    * Fix a bug that crash when recieve PRIORITY Flags while using HTTP/2.
+* B231.0.41 - 5.0.0.4.41.0 - 2021.06.22
+    * Modify the filter to work on the reverse proxy.
+* B231.0.40 - 5.0.0.4.40.0 - 2021.06.14
+    * Fix a bug that hth crashes when use JSVSSL ( over Maxproc num ).
+* B231.0.39 - 5.0.0.4.39.0 - 2021.05.24
+    * Fix a bug that large websocket messages are not processed in wjp.
+* B231.0.38 - 5.0.0.4.38.0 - 2021.05.20
+    * Support FCGI with php-fpm.
+* B231.0.37 - 5.0.0.4.37.0 - 2021.05.18
+    * Fix a bug that HTTP/2 response does not end when received chunk message from reverse proxy server.
+* B231.0.36 - 5.0.0.4.36.0 - 2021.04.29
+    * Fix a bug that HTH crashes when JEUS restart at cloud environment.
+* B231.0.35 - 5.0.0.4.35.0 - 2021.04.14
+    * Fix a bug that HTH crashes when file delete for POSVC.
+* B231.0.34 - 5.0.0.4.34.0 - 2021.04.08
+    * Support dynamic host routing flag from JEUS in wjpv2.
+* B231.0.33 - 5.0.0.4.33.0 - 2021.04.08
+    * Change JEUS stat info life cycle on Cloud license edition.
+* B231.0.32 - 5.0.0.4.32.0 - 2021.04.01
+    * Upgrade WBSSL from 1.1.1d to 1.1.1k.
+* B231.0.31 - 5.0.0.4.31.0 - 2021.03.23
+    * Fix a bug that large chunked requests may fail.
+* B231.0.30 - 5.0.0.4.30.0 - 2021.03.22
+    * Fix a bug that crash when recieve invalid response from JSV while using HTTP/2.
+* B231.0.29 - 5.0.0.4.29.0 - 2021.03.18
+    * Change error document's status code 307 to 302.
+* B231.0.28 - 5.0.0.4.28.0 - 2021.03.16
+    * Fix a bug that crash when client connection is closed while filegw upload service(PostProc).
+* B231.0.27 - 5.0.0.4.27.0 - 2021.03.11
+    * Add *REVERSE_PROXY_GROUP/REVERSE_PROXY.SetSslSni.
+* B231.0.26 - 5.0.0.4.26.0 - 2021.03.11
+    * Fix a bug that 200 response is sent even in the case of an error response.
+* B231.0.25 - 5.0.0.4.25.0 - 2021.03.11
+    * Fix a bug that an error response may be not sent when internal server is incomplete in reverse proxy.
+* B231.0.24 - 5.0.0.4.24.0 - 2021.03.09
+    * Fix a bug that HTH crashes when internal server is incomplete in reverse proxy.
+* B231.0.23 - 5.0.0.4.23.0 - 2021.02.25
+    * Fix a bug that HTH crashes with bad address when uploading POST data.
+* B231.0.22 - 5.0.0.4.22.0 - 2021.02.22
+    * Fix a bug that some PUT request results may conflict when multiple PUT requests arrive.
+* B231.0.21 - 5.0.0.4.21.0 - 2021.02.18
+    * Add trace log to debug PUT request processing.
+* B231.0.20 - 5.0.0.4.20.0 - 2021.02.18
+    * Fix a bug that select wrong server. B231.0.10's side effect.
+* B231.0.19 - 5.0.0.4.19.0 - 2021.02.17
+    * Support *VHOST.WebSocketErrorService in cwp.
+* B231.0.18 - 5.0.0.4.18.0 - 2021.02.17
+    * Support response header handling when use PO PreProc.
+* B231.0.17 - 5.0.0.4.17.0 - 2021.02.15
+    * Add gcore operation when wsm kill no responding hth.
+* B231.0.16 - 5.0.0.4.16.0 - 2021.02.09
+    * Support *REVERSE_PROXY/REVERSE_PROXY_GROUP.SetHostHeader SNI.
+* B231.0.15 - 5.0.0.4.15.0 - 2021.02.08
+    * Fix a bug that response(preprocess) is not processed for file gateway because of compression.
+* B231.0.14 - 5.0.0.4.14.0 - 2021.02.05
+    * Fix a bug that crash when free buffer of stream.
+* B231.0.13 - 5.0.0.4.13.0 - 2021.02.04
+    * Add *Node.TraceAccesslog logging type when client connected.
+* B231.0.12 - 5.0.0.4.12.0 - 2021.02.03
+    * Fix a bug that crash when worker thread and selector add response header at the same time.
+* B231.0.11 - 5.0.0.4.11.0 - 2021.02.01
+    * Fix a bug that HTH crashes when using websocket in wjp.
+* B231.0.10 - 5.0.0.4.10.0 - 2021.01.27
+    * Fix a bug that select wrong SERVER when use UserAgentRegExp, multiple vhost.
+* B231.0.9 - 5.0.0.4.9.0 - 2021.01.26
+    * Fix a bug that PUT(POST) method is not processed when using HTTP/2.
+* B231.0.8 - 5.0.0.4.8.0 - 2021.01.15
+    * Fix a bug that when using a reverse proxy incorrect url is passed when multiple slashes were attached.
+* B231.0.7 - 5.0.0.4.7.0 - 2021.01.13
+    * Fix a bug that crash when checking posvc.
+* B231.0.6 - 5.0.0.4.6.0 - 2021.01.08
+    * Support *VHOST.WebsocketErrorService.
+* B231.0.5 - 5.0.0.4.5.0 - 2021.01.06
+    * Change 'supported max clients' to 'max active clients' in wsadmin 'ci -s' command.
+* B231.0.4 - 5.0.0.4.4.0 - 2020.12.31
+    * Change not to check web token if WebTokenCookieKey is not set.
+* B231.0.3 - 5.0.0.4.3.0 - 2020.12.24
+    * Fix a bug that hth crashes when send 100-continue request with connection close header.
+* B231.0.2 - 5.0.0.4.2.0 - 2020.12.21
+    * Change env of hyperspace file storage address to $HYPER_SPACE_STORAGE.
+* B231.0.1 - 5.0.0.4.1.0 - 2020.12.15
+    * Add max clients in wsadmin 'ci -s' command.
+* B231.0.0 - 5.0.0.4.0.0 - 2020.12.15
+    * Release
