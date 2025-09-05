@@ -9,7 +9,7 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: jeus-app
+      app: jeus-appㅁㅁㅁㅁㅁ
   template:
     metadata:
       labels:
