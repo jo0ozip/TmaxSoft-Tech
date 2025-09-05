@@ -1,0 +1,47 @@
+FROM rockylinux:9.3-minimal
+
+#JDK_install
+RUN mkdir -p /usr/java/jdk-17.0.2
+COPY ./jdk-17.0.2 /usr/java/jdk-17.0.2
+
+ENV JAVA_HOME /usr/java/jdk-17.0.2
+ENV PATH $JAVA_HOME/bin:$PATH
+
+USER root
+RUN microdnf -y install hostname && microdnf clean all
+
+# JEUS env variable.
+ENV INSTALL_HOME /home/tmax
+ENV JEUS_HOME /home/tmax/jeus85
+ENV DOMAIN_HOME /home/tmax/jeus85/domains/domain1
+ENV SCRIPT_HOME /home/tmax/scripts
+ENV LOG_HOME /home/tmax/logs
+ENV JAVA_HOME /usr/java/jdk-17.0.2
+ENV PATH $JEUS_HOME/bin:$JEUS_HOME/lib:$PATH
+ENV APP_REPO /home/tmax/applications
+
+########## add user ############
+RUN groupadd dev && \
+    useradd -g dev -d /home/tmax -ms /bin/bash tmax
+
+########## mkdir ############
+RUN mkdir -p ${JEUS_HOME} && \
+    mkdir -p ${APP_REPO} && \
+    mkdir -p ${LOG_HOME}/gclog && \
+    mkdir -p ${LOG_HOME}/dump && \
+    mkdir -p ${SCRIPT_HOME}
+
+########## install ############
+ADD jeus85.tar ${INSTALL_HOME}
+COPY applications ${APP_REPO}
+COPY scripts ${SCRIPT_HOME}
+COPY license ${JEUS_HOME}/license
+COPY config/domain.xml ${DOMAIN_HOME}/config/domain.xml
+
+RUN chown -R tmax:dev ${JEUS_HOME} ${APP_REPO} ${LOG_HOME} ${SCRIPT_HOME} ${DOMAIN_HOME} && \
+    chmod -R 755 ${JEUS_HOME} ${SCRIPT_HOME}
+
+########## run ############
+USER tmax
+WORKDIR ${SCRIPT_HOME}
+CMD ["/home/tmax/scripts/start.sh"]

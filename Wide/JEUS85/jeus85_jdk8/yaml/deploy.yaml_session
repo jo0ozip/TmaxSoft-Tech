@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jeus
+  labels:
+    app: jeus
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jeus
+  template:
+    metadata:
+      labels:
+        app: jeus
+    spec:
+      containers:
+      - name: jeus-container
+        image: jangdndb/jeus85_rocky9.3-mini:jdk8_session
+        command: ["/bin/bash", "-c", "/home/tmax/scripts/start.sh"]
+        #command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 60000']
+        ports:
+        - containerPort: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/bash", "-c", "/home/tmax/scripts/stop.sh"]
+        env:
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: API_VERSION
+          value: "v1"
+        - name: KUBERNETES_NAMESPACE
+          value: "default"
+        - name: SCF_ID
+          value: "tmaxgroup-1"
+        - name: REDUNDANCY
+          value: "2"
+        - name: JAVA_VM_PROPERTIES
+          value: "-Xms2048m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -Xloggc:/home/tmax/jeus85/logs/gclog/$(MY_POD_NAME)_gc.log -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/tmax/logs/dump/"
+          #value: "-Xms512m -Xmx512m -XX:MetaspaceSize=256m -verbose:gc -XX:+UseG1GC -XX:+HeapDumpOnOutOfMemoryError -Djeus.session.shared.scope=redisScope"
+        - name: LOGLEVEL
+          value: "INFO"
+        - name: APP_DIR
+          value: "/home/tmax/applications"
+        - name: APP_NAME
+          value: "testap"
+        - name: CONTEXT_PATH
+          value: "/test"
