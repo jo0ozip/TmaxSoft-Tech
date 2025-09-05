@@ -17,14 +17,14 @@ ENV DOMAIN_NAME=jeus domain name
 # JEUS
 RUN mkdir -p ${JEUS_HOME} ${JEUS_LOG_HOME}/{gclog,dump,jvm} ${JEUS_HOME}/domains/${DOMAIN_NAME}/auto-deploy
 
-COPY --chown=webuser:webuser jeus8/ ${JEUS_HOME}/
-COPY --chown=webuser:webuser env/.bash_profile  ${JEUS_HOME}/
-COPY --chown=webuser:webuser env/bin/           ${JEUS_HOME}/bin/
-COPY --chown=webuser:webuser env/lib/           ${JEUS_HOME}/lib/
-COPY --chown=webuser:webuser env/license/       ${JEUS_HOME}/license/
-COPY --chown=webuser:webuser env/scripts/       ${JEUS_HOME}/bin/
-COPY --chown=webuser:webuser env/jdbc/          ${JEUS_HOME}/lib/datasource/
-COPY --chown=webuser:webuser env/domain.xml     ${JEUS_HOME}/domains/${DOMAIN_NAME}/config/
+COPY --chown=tmaxuser:tmaxuser jeus8/ ${JEUS_HOME}/
+COPY --chown=tmaxuser:tmaxuser env/.bash_profile  ${JEUS_HOME}/
+COPY --chown=tmaxuser:tmaxuser env/bin/           ${JEUS_HOME}/bin/
+COPY --chown=tmaxuser:tmaxuser env/lib/           ${JEUS_HOME}/lib/
+COPY --chown=tmaxuser:tmaxuser env/license/       ${JEUS_HOME}/license/
+COPY --chown=tmaxuser:tmaxuser env/scripts/       ${JEUS_HOME}/bin/
+COPY --chown=tmaxuser:tmaxuser env/jdbc/          ${JEUS_HOME}/lib/datasource/
+COPY --chown=tmaxuser:tmaxuser env/domain.xml     ${JEUS_HOME}/domains/${DOMAIN_NAME}/config/
 
 
 #######################
