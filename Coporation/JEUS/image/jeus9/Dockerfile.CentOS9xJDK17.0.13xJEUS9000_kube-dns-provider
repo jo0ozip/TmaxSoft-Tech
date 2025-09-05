@@ -1,0 +1,51 @@
+FROM centos-stream-container-minimal-9-20240819.0.x86_64:latest AS BASE
+
+LABEL maintainer TmaxSoft@tmaxsoft.com
+
+# add User
+RUN \
+    groupadd -r tmax -g 1000 && \
+    useradd -u 1000 -r -g tmax -m -d /home/tmax -s /bin/bash -c "tmax User" tmax && \
+    echo tmax:tmax | chpasswd && \
+    echo root:tmax | chpasswd && \
+    mkdir /home/tmax/scripts
+
+ADD JDK17/jdk-17.0.13.tar.gz /opt/java/jvm
+ADD 9.0.0.0-b15.tar.gz /home/tmax/
+ADD scripts/scripts.tar.gz  /home/tmax/scripts/
+ADD config/domain.xml /home/tmax/jeus9/domains/jeus_domain/config/
+ADD config/cloudserver.properties /home/tmax/jeus9/bin/
+COPY license/license_Trial_20241115 /home/tmax/jeus9/license/license
+ADD patch/patch_v9000.tar.gz /home/tmax/jeus9/lib/
+ADD patch/system_dns-provider/jeus9.0.0.0-cloud-kube-dns-provider_i337612_a2154069.jar /home/tmax/jeus9/lib/system/
+ADD examples/welcome.war /home/tmax/app/
+
+FROM centos-stream-container-minimal-9-20240819.0.x86_64:latest 
+
+RUN \
+    groupadd -r tmax -g 1000 && \
+    useradd -u 1000 -r -g tmax -m -d /home/tmax -s /bin/bash -c "tmax User" tmax && \
+    echo tmax:tmax | chpasswd && \
+    echo root:tmax | chpasswd && \
+  mkdir /home/tmax/scripts && \
+  mkdir -p /logs
+
+COPY --from=BASE /opt/java/jvm/jdk-17.0.13 /opt/java/jvm/jdk-17.0.13
+COPY --from=BASE /home/tmax /home/tmax
+
+ENV JEUS_HOME /home/tmax/jeus9
+ENV SCRIPT_HOME /home/tmax/scripts
+
+RUN \
+  ln -s /opt/java/jdk-17.0.13 /opt/java/java17 && \
+  chmod -R +x ${JEUS_HOME} && \
+  chmod +x /home/tmax/scripts/* && \
+  chown -R tmax:tmax /logs && \
+  chown -R tmax:tmax /home && \
+  mv /home/tmax/scripts/jeusEncode /home/tmax/jeus9/bin/ && \
+  rm -Rf /home/tmax/jeus9/lib/csp
+
+USER tmax
+WORKDIR /home/tmax/scripts
+ENTRYPOINT ["/home/tmax/scripts/start.sh"]
+CMD ["&"]
