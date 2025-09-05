@@ -1,0 +1,31 @@
+!!! 압축파일 및 Dockerfile의 이름이 다를 수 있으므로 맞게 수정 후 사용 !!!
+
+1. 압축해제 및 이미지 변경
+1) 압축 해제 시 아래와 같은 파일이 확인됨
+- applications
+- config
+- jdk1.8.0_181
+- license
+- scripts
+- yaml
+- Dockerfile.jeus85_jdk8
+- jeus85.tar
+- build.sh
+
+2) license 파일 추가
+- license 디렉토리에 라이선스 파일 추가
+
+3) JDK 및 Base Image 변경
+- 사용할 JDK 버전으로 변경 후 Dockerfile.jeus85_jdk8 내 JDK 부분 수정
+- Base OS 변경 후 Dockerfile.jeus85_jdk8 내 FROM 부분 수정
+
+2. build
+- build.sh의 생성할 이미지 이름 변경 후 실행
+
+3. deployment 실행
+1) yaml 수정
+- 첨부된 deploy.yaml 파일에서 정보 수정
+- 환경변수는 ENV에 설정 (첨부된 환경변수.xlsx 참조)
+
+2) deployment 생성 및 호출
+- 첨부된 svc.yaml 실행하여 testap 호출
