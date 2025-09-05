@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jeus
+  namespace: jeus
+  labels:
+    app: jeus-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: jeus-app
+  template:
+    metadata:
+      labels:
+        app: jeus-app
+    spec:
+      securityContext:
+        runAsUser: 1001090000 
+        fsGroup: 1001090000
+      containers:
+      - name: jeus
+        image: 192.168.77.10:5000/jeus85_jdk17
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: jeus-applog
+          mountPath: /applog/jeus
+        - name: jeus-mwlog
+          mountPath: /mwlog/jeus
+        - name: jeus-bizfile
+          mountPath: /bizfile/jeus
+        - name: jeus-backup
+          mountPath: /backup/jeus
+        - name: jeus-data
+          mountPath: /data/jeus
+        - name: jeus-config
+          mountPath: /mw/jeus/configMap
+          readOnly: true
+      volumes:
+      - name: jeus-applog
+        persistentVolumeClaim:
+          claimName: jeus-applog-pvc
+      - name: jeus-mwlog
+        persistentVolumeClaim:
+          claimName: jeus-mwlog-pvc
+      - name: jeus-bizfile
+        persistentVolumeClaim:
+          claimName: jeus-bizfile-pvc
+      - name: jeus-backup
+        persistentVolumeClaim:
+          claimName: jeus-backup-pvc
+      - name: jeus-data
+        persistentVolumeClaim:
+          claimName: jeus-data-pvc
+      - name: jeus-config
+        configMap:
+          name: dw-smb-bed-was-cm
+          items:
+          - key: domain.xml
+            path: domain.xml
