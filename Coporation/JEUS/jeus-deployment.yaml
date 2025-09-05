@@ -4,7 +4,7 @@ metadata:
   name: jeus
   namespace: jeus
   labels:
-    app: jeus-app
+    app: jeus-apptest
 spec:
   replicas: 2
   selector:
